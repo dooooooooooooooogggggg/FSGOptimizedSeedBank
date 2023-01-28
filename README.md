@@ -1,3 +1,8 @@
+# Windows build command
+C:\software\msys2\mingw64\bin\gcc.exe -fdiagnostics-color=always -g C:\workspace\minecraft\FSGOptimizedSeedBank\biomehunt.c -o C:\workspace\minecraft\FSGOptimizedSeedBank\biomehunt.exe -Iinclude -Llibs -lminecraft_nether_gen_rs -lcubiomes -lfsg -lgcrypt -lgpg-error -lws2_32 -luserenv -lbcrypt
+
+Using cubiomes at this git commit https://github.com/Cubitect/cubiomes/commit/dd7e619
+
 # FSGOptimizedSeedBank
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/specnr)

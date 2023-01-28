@@ -1239,7 +1239,7 @@ void cryingHunt(uint64_t lower48, uint64_t upper16start){
   LayerStack g;
   int mc = MC_1_16;
   setupGenerator(&g, mc);
-  
+
   uint64_t upper16 = upper16start;
   int winners = 0;
   //we need to know portal x portal z, portal type, and the crying lookup 64;
@@ -1261,7 +1261,6 @@ void cryingHunt(uint64_t lower48, uint64_t upper16start){
     if (valid_biome > -1){
       if (testCrying(seed, px, pz, chesty, packed) > 0){
         winners += 1;
-        printf("%ld\n",seed);
         return;
       }
     }

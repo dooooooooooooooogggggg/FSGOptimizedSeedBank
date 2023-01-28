@@ -34,7 +34,8 @@ def run_seed(filter):
         sclass = res_json.get("class")
         randbiome = res_json.get("randbiome")
         pref = res_json.get("pref")  # village and/or shipwreck preference
-        cmd = f'./bh {sseed} {sclass} {randbiome} {pref}'
+        cmd = f'biomehunt.exe {sseed} {sclass} {randbiome} {pref}'
+        print(cmd)
         seed = os.popen(cmd).read().strip()
     display_seed(res_json, seed)
 
