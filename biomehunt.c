@@ -1308,7 +1308,6 @@ void biomeHunt(uint64_t lower48, uint64_t upper16start, int hasVillage, int hasS
 }
 
 int main (int argc, char *argv[]) {
-  // printf("sizeof int %d, sizeof long %d, sizeof long long %d", sizeof(int), sizeof(long), sizeof(long long));
   uint64_t seed = atoll(argv[1]);
   int class = atoi(argv[2]);
   uint64_t biomestart = atoll(argv[3]);

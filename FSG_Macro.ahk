@@ -33,7 +33,7 @@ IfNotExist, %SavesDirectory%_oldWorlds
 RunHide(Command) {
     dhw := A_DetectHiddenWindows
     DetectHiddenWindows, On
-    Run, C:\Windows\system32\cmd.exe,, Hide, cPid
+    Run, %ComSpec%,, Hide, cPid
     WinWait, ahk_pid %cPid%
     DetectHiddenWindows, %dhw%
     DllCall("AttachConsole", "uint", cPid)
