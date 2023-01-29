@@ -2,9 +2,13 @@ import os
 import sys
 import requests
 import json
-from multiprocessing import Process
+# from multiprocessing import Process
 import subprocess
+import queue
+from subprocess import Popen, PIPE
+import threading
 import signal
+import time
 
 import socket
 
@@ -17,14 +21,16 @@ def new_getaddrinfo(args, *kwargs):
 
 
 socket.getaddrinfo = new_getaddrinfo
-
+done = False
 
 def display_seed(verif_data, seed):
+    global done
     print(f"Seed Found({verif_data['iso']}): {seed}")
     print(f"Temp Token: {verif_data}\n")
+    done = True
 
 
-def run_seed(filter):
+def run_seed(filter, stopevent):
     seed = ""
     while seed == "":
         resp = requests.get(
@@ -36,8 +42,23 @@ def run_seed(filter):
         pref = res_json.get("pref")  # village and/or shipwreck preference
         cmd = f'biomehunt.exe {sseed} {sclass} {randbiome} {pref}'
         print(cmd)
-        seed = os.popen(cmd).read().strip()
-    display_seed(res_json, seed)
+        proc = Popen(cmd, shell=True, stdout=PIPE)
+        for _ in range(10):
+            try:
+                stdout, _ = proc.communicate(timeout=0.2)
+                seed = stdout.decode().strip()
+                if seed != "":
+                    display_seed(res_json, seed)
+                    return
+            except subprocess.TimeoutExpired:
+                if stopevent.is_set():
+                    print('detected stopevent, stopping')
+                    # proc.terminate()
+                    subprocess.run(f'taskkill /F /T /PID {proc.pid}', stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                    return
+        subprocess.run(f'taskkill /F /T /PID {proc.pid}', stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        
+        # proc.terminate()
 
 
 def start_run():
@@ -46,24 +67,23 @@ def start_run():
         read_json = json.load(filter_json)
         filter = read_json["filter"]
         num_processes = read_json["thread_count"]
-    processes = []
+    threads = []
+    stopevents = []
     for i in range(num_processes):
-        processes.append(Process(target=run_seed, args=(filter,)))
-        processes[-1].start()
-    i = 0
-    while True:
-        for j in range(len(processes)):
-            if not processes[j].is_alive():
-                for k in range(len(processes)):
-                    processes[k].kill()
-                    p = subprocess.Popen(['ps', '-A'], stdout=subprocess.PIPE)
-                    out, err = p.communicate()
-                    for line in out.splitlines():
-                        if b'bh' in line:
-                            pid = int(line.split(None, 1)[0])
-                            os.kill(pid, signal.SIGKILL)
-                return
-        i = (i + 1) % num_processes
+        stopevent = threading.Event()
+        t = threading.Thread(target=run_seed, args=(filter,stopevent))
+        stopevents.append(stopevent)
+        t.start()
+        threads.append(t)
+    
+    while not done:
+        time.sleep(0.05)
+    print("Done")
+    for stopevent in stopevents:
+        stopevent.set()
+    for thread in threads:
+        thread.join()
+    
 
 
 if __name__ == '__main__':
