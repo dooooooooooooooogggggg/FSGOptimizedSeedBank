@@ -1254,7 +1254,7 @@ void cryingHunt(uint64_t lower48, uint64_t upper16start){
   int valid_biome = 0;
   int counter = 0;
   int chesty = chestys[portalStyle];
-  printf("px,pz: %d,%d, fortQuad: %d, result %d, valid: %d, portalStyle: %d\n", px,pz,fortQuad,result, valid, portalStyle);
+  // printf("px,pz: %d,%d, fortQuad: %d, result %d, valid: %d, portalStyle: %d\n", px,pz,fortQuad,result, valid, portalStyle);
   for(;upper16 != upper16start-1; upper16 = (upper16 + 1) % (1L << 16) ){
     seed = lower48 | (upper16 << 48);
     valid_biome = valid_biomes_bank(seed, &fortQuad, &g, px, pz);
