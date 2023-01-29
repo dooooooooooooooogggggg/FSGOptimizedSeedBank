@@ -106,7 +106,7 @@ void verification_token(uint64_t timestamp, unsigned int vrs, int high_int, int 
   print32(vrs);
   printf("-");
   print64(seed);
-  printf("-%ld",timestamp2-timestamp);
+  printf("-%lld",timestamp2-timestamp);
   printf("\n");
   return;
 }
@@ -1214,7 +1214,7 @@ int valid_biomes(int64_t seed, int* fortressQuadrant, int filter_style, LayerSta
 
 int neilrox(long long seed, int cx, int cz){
   char buffer[256];
-  snprintf(buffer, sizeof(buffer), "java -jar new.jar overworld %ld %d %d", seed, cx, cz);
+  snprintf(buffer, sizeof(buffer), "java -jar new.jar overworld %lld %d %d", seed, cx, cz);
   int x,y,z;
   y=-1;
   FILE *fp = popen(buffer,"r");
@@ -1227,7 +1227,7 @@ int testCrying(int64_t seed, int px, int pz, int chesty, uint64_t packed){
   //Synthesize call to Neil's chest predictor
   int cy = neilrox(seed, px>>4, pz>>4);
   int basey = cy - chesty;
-  return (packed >> (basey - 32)) & 1L;
+  return (packed >> (basey - 32)) & 1LL;
 }
 
 void cryingHunt(uint64_t lower48, uint64_t upper16start){
@@ -1254,13 +1254,13 @@ void cryingHunt(uint64_t lower48, uint64_t upper16start){
   int valid_biome = 0;
   int counter = 0;
   int chesty = chestys[portalStyle];
-  printf("px,pz: %d,%d, fortQuad: %d, result %d, valid: %d, portalStyle: %d\n", px,pz,fortQuad,result, valid, portalStyle);
+  // printf("px,pz: %d,%d, fortQuad: %d, result %d, valid: %d, portalStyle: %d\n", px,pz,fortQuad,result, valid, portalStyle);
   for(;upper16 != upper16start-1; upper16 = (upper16 + 1) % (1L << 16) ){
     seed = lower48 | (upper16 << 48);
     valid_biome = valid_biomes_bank(seed, &fortQuad, &g, px, pz);
     if (valid_biome > -1){
       if (testCrying(seed, px, pz, chesty, packed) > 0){
-        printf("Seed: %lld", seed);
+        printf("%lld", seed);
         winners += 1;
         return;
       }
