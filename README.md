@@ -6,6 +6,7 @@ We ran into issues until we converted 32 bit longs to 64 bit long longs.  We are
 gcc -fdiagnostics-color=always -g biomehunt.c -o biomehunt.exe -Iinclude -Llibs -lminecraft_nether_gen_rs -lcubiomes -lfsg -lgcrypt -lgpg-error -lws2_32 -luserenv -lbcrypt
 
 Built cubiomes at this git commit https://github.com/Cubitect/cubiomes/commit/dd7e619
+
 Built minecraft_nether_generation_rs at https://github.com/SeedFinding/minecraft_nether_generation_rs/commit/e0d69a449826a11b4cf396c00d1d0f05f7ccd0b9.  Make sure rustc is using mingw.
 
 # FSGOptimizedSeedBank
