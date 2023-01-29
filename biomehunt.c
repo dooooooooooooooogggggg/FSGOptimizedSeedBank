@@ -55,14 +55,14 @@ void int64ToChar(unsigned char a[], int64_t n) {
 }
 
 uint64_t charTo64bitNum(char a[]) {
-  uint64_t n = (unsigned long) (a[7] & 0xFF);
-  n |= (unsigned long) (a[6] & 0xFF) << 8;
-  n |= (unsigned long) (a[5] & 0xFF) << 16;
-  n |= (unsigned long) (a[4] & 0xFF) << 24;
-  n |= (unsigned long) (a[3] & 0xFF) << 32;
-  n |= (unsigned long) (a[2] & 0xFF) << 40;
-  n |= (unsigned long) (a[1] & 0xFF) << 48;
-  n |= (unsigned long) (a[0] & 0xFF) << 56;
+  uint64_t n = (unsigned long long) (a[7] & 0xFF);
+  n |= (unsigned long long) (a[6] & 0xFF) << 8;
+  n |= (unsigned long long) (a[5] & 0xFF) << 16;
+  n |= (unsigned long long) (a[4] & 0xFF) << 24;
+  n |= (unsigned long long) (a[3] & 0xFF) << 32;
+  n |= (unsigned long long) (a[2] & 0xFF) << 40;
+  n |= (unsigned long long) (a[1] & 0xFF) << 48;
+  n |= (unsigned long long) (a[0] & 0xFF) << 56;
   return n;
 }
 
@@ -89,7 +89,7 @@ void print32(unsigned int n){
   return;
 }
 
-long l2norm(long x1, long z1, long x2, long z2){
+long long l2norm(long long x1, long long z1, long long x2, long long z2){
   return (x1-x2)*(x1-x2) + (z1-z2)*(z1-z2);
 }
 
@@ -133,13 +133,13 @@ uint64_t rand64()
 //this is classic FSG fastion without biome (pos/pos bastion, tells you neg/pos or pos/neg fortress)
 char netherchecker(int64_t seed, int* fortressQuadrant){
   //return true if the nether is good (3 structures within -128 to 128 ignoring neg/neg) at 
-  unsigned long modulus = 1ULL << 48;
-  unsigned long AA = 341873128712;
-  unsigned long BB = 132897987541;
+  unsigned long long modulus = 1ULL << 48;
+  unsigned long long AA = 341873128712;
+  unsigned long long BB = 132897987541;
   int bastionCount = 0;
   int result = 0;
   *fortressQuadrant = 0;
-  int64_t fakeseed = (seed + 30084232ULL) ^ 0x5deece66dUL;
+  int64_t fakeseed = (seed + 30084232ULL) ^ 0x5deece66dULL;
   int64_t chunkx = next(&fakeseed, 31) % 23;
   int64_t chunkz = next(&fakeseed, 31) % 23;
   int structureType = (next(&fakeseed, 31) % 5)  >= 2;
@@ -156,7 +156,7 @@ char netherchecker(int64_t seed, int* fortressQuadrant){
   int btype = nextInt(&fakeseed, 4);
   result = btype;//0,1,2,3 HSTB
   int gotfort = 0;
-  fakeseed = (seed + 30084232UL - AA) ^ 0x5deece66dUL;
+  fakeseed = (seed + 30084232ULL - AA) ^ 0x5deece66dULL;
   chunkx = next(&fakeseed, 31) % 23;
   chunkz = next(&fakeseed, 31) % 23;
   structureType = (next(&fakeseed, 31) % 5)  >= 2;
@@ -168,7 +168,7 @@ char netherchecker(int64_t seed, int* fortressQuadrant){
     return result;
   }
 
-  fakeseed = (seed + 30084232UL - BB) ^ 0x5deece66dUL;
+  fakeseed = (seed + 30084232ULL - BB) ^ 0x5deece66dULL;
   chunkx = next(&fakeseed, 31) % 23;
   chunkz = next(&fakeseed, 31) % 23;
   structureType = (next(&fakeseed, 31) % 5)  >= 2;
@@ -185,7 +185,7 @@ char netherchecker(int64_t seed, int* fortressQuadrant){
 
 //checks for basalt deltas at bastion location
 char bastionbiome(uint64_t seed){
-  int64_t fakeseed = (seed + 30084232ULL) ^ 0x5deece66dUL;
+  int64_t fakeseed = (seed + 30084232ULL) ^ 0x5deece66dULL;
   int64_t chunkx = next(&fakeseed, 31) % 23;
   int64_t chunkz = next(&fakeseed, 31) % 23;
   NetherGen* netherGen=create_new_nether(seed);  
@@ -202,9 +202,9 @@ char bastionbiome(uint64_t seed){
 int ravinePositionAndQuality(int64_t seed){
   int64_t fakeseed, carvea, carveb;
   int carver_offset = 0;
-  long chx, chz, i;
-  long magmax, magmaz, magmay;
-  long partialy, maxLength;
+  long long chx, chz, i;
+  long long magmax, magmaz, magmay;
+  long long partialy, maxLength;
   float temp, pitch, width;
   for (chx = -4; chx < 16; chx++){
     for (chz = -4; chz < 16; chz++){
@@ -240,9 +240,9 @@ int ravinePositionAndQuality(int64_t seed){
 int ravineBiome(int64_t seed, LayerStack* gp){
   int64_t fakeseed, carvea, carveb;
   int carver_offset = 0;
-  long chx, chz, i;
-  long magmax, magmaz, magmay;
-  long partialy, maxLength;
+  long long chx, chz, i;
+  long long magmax, magmaz, magmay;
+  long long partialy, maxLength;
   float temp, pitch, width;
   for (chx = -4; chx < 16; chx++){
     for (chz = -4; chz < 16; chz++){
@@ -306,7 +306,7 @@ int shipwreckLocationAndType(int64_t seed){ //we will presume ocean not beach (t
   if (!valid3 || p3.x >= 96 || p3.z >= 96){
     return 0;
   }
-  unsigned long modulus = 1UL << 48;
+  unsigned long long modulus = 1ULL << 48;
   int64_t fakeseed, carvea, carveb;
   int shipchunkx, shipchunkz, portOceanType, portNormalY, portNormalType;
   int shiptype;
@@ -317,8 +317,8 @@ int shipwreckLocationAndType(int64_t seed){ //we will presume ocean not beach (t
   carveb = nextLong(&fakeseed);
   fakeseed = ((shipchunkx * carvea) ^ (shipchunkz * carveb) ^ seed) ^ 0x5deece66dL;
   fakeseed = fakeseed & 0xFFFFFFFFFFFF;
-  fakeseed = (0x5deece66dUL*fakeseed + 11) % modulus ; //advance 2
-  fakeseed = (0x5deece66dUL*fakeseed + 11) % modulus ;
+  fakeseed = (0x5deece66dULL*fakeseed + 11) % modulus ; //advance 2
+  fakeseed = (0x5deece66dULL*fakeseed + 11) % modulus ;
   shiptype = (fakeseed >> 17) % 20;
   if (shiptype == 2 || shiptype == 5 || shiptype == 8 || shiptype == 12 || shiptype == 15 || shiptype == 18){
     return 0; //rejecting front only ships allowing all others
@@ -398,7 +398,7 @@ int portalTypeJungle(int64_t seed){
   const StructureConfig sconf_portal = RUINED_PORTAL_CONFIG;
   int valid2, portalType;
   Pos p2 = getStructurePos(sconf_portal, seed, 0, 0, &valid2);
-  unsigned long modulus = 1UL << 48;
+  unsigned long long modulus = 1ULL << 48;
   int portcx, portcz, portOceanType, portNormalY, portNormalType;
   float buriedFloat, bigOrSmall;
   int rawPortalType;
@@ -543,7 +543,7 @@ int strongholdAngle(int64_t seed, int fortressQuadrant){
   StrongholdIter sh;
   int mc = MC_1_16;
   Pos pos_sh = initFirstStronghold(&sh, mc, seed);
-  long temp1, temp2, temp3;
+  long long temp1, temp2, temp3;
   if (fortressQuadrant == -1){
     temp1 = l2norm(pos_sh.x, pos_sh.z, -1200L, 1200L);
     temp2 = l2norm(pos_sh.x, pos_sh.z, 1639L, 439L);
@@ -567,8 +567,8 @@ int strongholdSlowCheck(int64_t seed, int fortressQuadrant, LayerStack* gp){
   StrongholdIter sh;
   int mc = MC_1_16;
   Pos pos_sh = initFirstStronghold(&sh, mc, seed);
-  long sh_dist = 0xffffffffffff;
-  long temp = 0;
+  long long sh_dist = 0xffffffffffff;
+  long long temp = 0;
   int i, N = 3;
   Pos best_sh;
   for (i = 1; i <= N; i++)
@@ -629,15 +629,15 @@ int portalLoot(int64_t lower48, int px, int pz, int pType){
     obicutoff = obiT[pType];
   }
 
-  int64_t fakeseed = (lower48) ^ 0x5deece66dUL;
-  long a = nextLong(&fakeseed) | 1;
-  long b = nextLong(&fakeseed) | 1;
-  fakeseed = ((long)px * a + (long)pz * b) ^ lower48;
-  //fakeseed = fakeseed ^ 0x5deece66dUL;
+  int64_t fakeseed = (lower48) ^ 0x5deece66dULL;
+  long long a = nextLong(&fakeseed) | 1;
+  long long b = nextLong(&fakeseed) | 1;
+  fakeseed = ((long long)px * a + (long long)pz * b) ^ lower48;
+  //fakeseed = fakeseed ^ 0x5deece66dULL;
   fakeseed = fakeseed & 0xffffffffffff; //population seed set?
-  int64_t cseed = (fakeseed + 40005) ^ 0x5deece66dUL;//decorator set?
-  long chesti = nextLong(&cseed);
-  cseed = (int64_t) chesti^ 0x5deece66dUL; //& 0xffffffffffff;// ^ 0x5deece66dUL;//?  IF THINGS ARE WRONG TRY THIS FIRST
+  int64_t cseed = (fakeseed + 40005) ^ 0x5deece66dULL;//decorator set?
+  long long chesti = nextLong(&cseed);
+  cseed = (int64_t) chesti^ 0x5deece66dULL; //& 0xffffffffffff;// ^ 0x5deece66dULL;//?  IF THINGS ARE WRONG TRY THIS FIRST
   int num_rolls = 4 + nextInt(&cseed, 5);
   int ri = 0;
   int table[100] = {40, 1, 1, 2, 40, 1, 1, 4, 40, 1, 9, 18, 40, 0, 0, 0, 40, 0, 0, 0, 15, 0, 0, 0, 15, 1, 4, 24, 15, 2, 0, 0, 15, 2, 1, 0, 15, 2, 2, 0, 15, 2, 3, 0, 15, 2, 4, 0, 15, 2, 5, 0, 15, 2, 6, 0, 15, 2, 7, 0, 15, 2, 8, 0, 5, 1, 4, 12, 5, 0, 0, 0, 5, 0, 0, 0, 5, 1, 4, 12, 5, 0, 0, 0, 5, 1, 2, 8, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 2};
@@ -790,15 +790,15 @@ int valid_village_and_portal_not_biome(int64_t lower48){
 
 int possible_lava(int64_t lower48, int x, int z){
   //printf("lower48: %ld\n", lower48);
-  int64_t fakeseed = (lower48) ^ 0x5deece66dUL;
-  long a = nextLong(&fakeseed) | 1;
-  long b = nextLong(&fakeseed) | 1;
-  fakeseed = ((long)x * a + (long)z * b) ^ lower48;
+  int64_t fakeseed = (lower48) ^ 0x5deece66dULL;
+  long long a = nextLong(&fakeseed) | 1;
+  long long b = nextLong(&fakeseed) | 1;
+  fakeseed = ((long long)x * a + (long long)z * b) ^ lower48;
   fakeseed = fakeseed & 0xffffffffffff; //population seed set?
   //printf("population seed: %ld\n", fakeseed);
-  int64_t lakeseed = (fakeseed + 10000) ^ 0x5deece66dUL;
+  int64_t lakeseed = (fakeseed + 10000) ^ 0x5deece66dULL;
   //printf("lakeseed: %ld\n", lakeseed);
-  int64_t lavaseed = (fakeseed + 10001) ^ 0x5deece66dUL;
+  int64_t lavaseed = (fakeseed + 10001) ^ 0x5deece66dULL;
   //printf("lavaseed: %ld\n", lavaseed);
   if (nextInt(&lakeseed, 4) != 0  && nextInt(&lavaseed, 8) != 0){
     return 0;
@@ -1027,7 +1027,7 @@ int valid_structures_and_types(int64_t lower48, int* fortressQuadrant, int filte
 int spawn_close2(int64_t seed, LayerStack* gp, int x, int z){ //costs about 1/6 biomes...
   int mc = MC_1_16;
   Pos spawn = getSpawn(mc, gp, NULL, seed);
-  long targetD = l2norm(x, z, spawn.x, spawn.z);
+  long long targetD = l2norm(x, z, spawn.x, spawn.z);
   if (targetD <= 110*110){
     return 1;
   }
@@ -1212,7 +1212,7 @@ int valid_biomes(int64_t seed, int* fortressQuadrant, int filter_style, LayerSta
   return 1;
 }
 
-int neilrox(long seed, int cx, int cz){
+int neilrox(long long seed, int cx, int cz){
   char buffer[256];
   snprintf(buffer, sizeof(buffer), "java -jar new.jar overworld %ld %d %d", seed, cx, cz);
   int x,y,z;
@@ -1254,12 +1254,13 @@ void cryingHunt(uint64_t lower48, uint64_t upper16start){
   int valid_biome = 0;
   int counter = 0;
   int chesty = chestys[portalStyle];
-  //printf("px,pz: %d,%d, fortQuad: %d, result %d, valid: %d, portalStyle: %d\n", px,pz,fortQuad,result, valid, portalStyle);
+  printf("px,pz: %d,%d, fortQuad: %d, result %d, valid: %d, portalStyle: %d\n", px,pz,fortQuad,result, valid, portalStyle);
   for(;upper16 != upper16start-1; upper16 = (upper16 + 1) % (1L << 16) ){
     seed = lower48 | (upper16 << 48);
     valid_biome = valid_biomes_bank(seed, &fortQuad, &g, px, pz);
     if (valid_biome > -1){
       if (testCrying(seed, px, pz, chesty, packed) > 0){
+        printf("Seed: %lld", seed);
         winners += 1;
         return;
       }
@@ -1297,7 +1298,7 @@ void biomeHunt(uint64_t lower48, uint64_t upper16start, int hasVillage, int hasS
     valid_biome = valid_biomes_bank_lava(seed, &fortQuad, &g, px, pz, hasIron, hasVillage, hasShip);
     if (valid_biome > -1){
       winners += 1;
-      printf("%ld\n",seed);
+      printf("%lld\n",seed);
       return;
     }
     counter++;
@@ -1307,9 +1308,10 @@ void biomeHunt(uint64_t lower48, uint64_t upper16start, int hasVillage, int hasS
 }
 
 int main (int argc, char *argv[]) {
-  uint64_t seed = atol(argv[1]);
+  // printf("sizeof int %d, sizeof long %d, sizeof long long %d", sizeof(int), sizeof(long), sizeof(long long));
+  uint64_t seed = atoll(argv[1]);
   int class = atoi(argv[2]);
-  uint64_t biomestart = atol(argv[3]);
+  uint64_t biomestart = atoll(argv[3]);
   lookup = (uint64_t*) malloc(sizeof(uint64_t)*13*2*4*10*10);
   FILE *fpz = fopen("packed.bin","rb");
   int reszzz = fread(lookup, 83200, 1, fpz);
