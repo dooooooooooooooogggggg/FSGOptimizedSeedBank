@@ -94,7 +94,7 @@ onTitleScreen()
 }
 
 GenerateSeed() {
-    fsg_seed_token := RunHide("python.exe findSeed.py")
+    fsg_seed_token := RunHide("findSeed.exe") ; can use python script here instead with python findSeed.py
 	if (fsg_seed_token = "") {
 		throw Exception("Unable to parse the result of python findSeed.py", -1)
 	}

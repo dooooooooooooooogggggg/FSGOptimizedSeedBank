@@ -1,7 +1,12 @@
-# Windows build command
+This is a version of FSG built for windows with mingw64 so that wsl is no longer necessary.  Just run `findSeed.exe` (built with pyinstaller) or `python findSeed.py` in your macro.
+
+We ran into issues until we converted 32 bit longs to 64 bit long longs.  We are both not very experienced at building C projects / porting to windows so it's possible this wasn't necessary and we were just missing compiler flags.
+
+# To build on windows with mingw
 gcc -fdiagnostics-color=always -g biomehunt.c -o biomehunt.exe -Iinclude -Llibs -lminecraft_nether_gen_rs -lcubiomes -lfsg -lgcrypt -lgpg-error -lws2_32 -luserenv -lbcrypt
 
-Using cubiomes at this git commit https://github.com/Cubitect/cubiomes/commit/dd7e619
+Built cubiomes at this git commit https://github.com/Cubitect/cubiomes/commit/dd7e619
+Built minecraft_nether_generation_rs at https://github.com/SeedFinding/minecraft_nether_generation_rs/commit/e0d69a449826a11b4cf396c00d1d0f05f7ccd0b9.  Make sure rustc is using mingw.
 
 # FSGOptimizedSeedBank
 
