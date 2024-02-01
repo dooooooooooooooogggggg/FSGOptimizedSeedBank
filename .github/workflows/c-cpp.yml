@@ -13,5 +13,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Set up MinGW
+      uses: egor-tensin/setup-mingw@v2
+      with:
+        platform: x64
     - name: build
-      run: gcc -fdiagnostics-color=always -g biomehunt.c -o biomehunt.exe -Iinclude -Llibs -lminecraft_nether_gen_rs -lcubiomes -lfsg -lgcrypt -lgpg-error -lws2_32 -luserenv -lbcrypt
+      run: cc -fdiagnostics-color=always -g biomehunt.c -o biomehunt.exe -Iinclude -Llibs -lminecraft_nether_gen_rs -lcubiomes -lfsg -lgcrypt -lgpg-error -lws2_32 -luserenv -lbcrypt
