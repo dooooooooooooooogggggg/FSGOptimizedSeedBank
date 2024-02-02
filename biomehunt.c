@@ -592,10 +592,10 @@ int strongholdSlowCheck(int64_t seed, int fortressQuadrant, LayerStack* gp){
   if (sh_dist > 300*300){
     return 0;
   }
-  int shbiome = getBiomeAtPos(gp, best_sh);
-  if (shbiome != deep_ocean && shbiome != deep_warm_ocean && shbiome != deep_lukewarm_ocean && shbiome != deep_cold_ocean && shbiome != deep_frozen_ocean){
-    return 0;
-  }
+  // int shbiome = getBiomeAtPos(gp, best_sh);
+  // if (shbiome != deep_ocean && shbiome != deep_warm_ocean && shbiome != deep_lukewarm_ocean && shbiome != deep_cold_ocean && shbiome != deep_frozen_ocean){
+  //   return 0;
+  // }
   return 1;
 }
 
