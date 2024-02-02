@@ -540,6 +540,7 @@ int portalTypeNormal(int64_t seed){
 }
 
 int strongholdAngle(int64_t seed, int fortressQuadrant){
+  return 1;
   StrongholdIter sh;
   int mc = MC_1_16;
   Pos pos_sh = initFirstStronghold(&sh, mc, seed);
@@ -564,6 +565,7 @@ int strongholdAngle(int64_t seed, int fortressQuadrant){
 }
 
 int strongholdSlowCheck(int64_t seed, int fortressQuadrant, LayerStack* gp){
+  return 1;
   StrongholdIter sh;
   int mc = MC_1_16;
   Pos pos_sh = initFirstStronghold(&sh, mc, seed);
